@@ -7,8 +7,24 @@ const App = () => {
   return (
     <div className="App">
       <GameBoard />
-      <Enemy/>
-      <Tower/>
+      <Enemy
+        position={0}
+        path={[0, 1, 2, 3, 4]} // Replace with your actual path array
+        speed={5}
+        health={100}
+        damage={10}
+        onEnemyReachedEnd={() => console.log('Enemy reached the end!')}
+        onEnemyDestroyed={() => console.log('Enemy destroyed!')}
+      />
+      <Tower
+        position={0}
+        onClick={(position) => console.log('Tower clicked at position:', position)}
+        type="Cannon"
+        damage={50}
+        range={10}
+        isUpgradable={true}
+        onUpgrade={(position) => console.log('Upgrade tower at position:', position)}
+      />
     </div>
   );
 };

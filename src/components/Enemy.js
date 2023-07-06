@@ -3,12 +3,12 @@ import React, { useState, useEffect } from 'react';
 const Enemy = ({ position, path, speed, health, damage, onEnemyReachedEnd, onEnemyDestroyed }) => {
   const [currentPosition, setCurrentPosition] = useState(position);
   const [currentHealth, setCurrentHealth] = useState(health);
+  const [reachedEnd, setReachedEnd] = useState(false);
 
   useEffect(() => {
     const moveEnemy = () => {
-      if (currentPosition >= path.length - 1) {
-        // Enemy has reached the end
-        onEnemyReachedEnd();
+      if (currentPosition >= path.length - 1 || reachedEnd) {
+        // Enemy has reached the end or already reached end, stop moving
         return;
       }
 
@@ -24,14 +24,20 @@ const Enemy = ({ position, path, speed, health, damage, onEnemyReachedEnd, onEne
     };
 
     moveEnemy();
-  }, [currentPosition, path, speed, onEnemyReachedEnd]);
+  }, [currentPosition, path, speed, reachedEnd]);
 
   const handleDamage = (damageAmount) => {
-    setCurrentHealth(currentHealth - damageAmount);
+    setCurrentHealth((prevHealth) => prevHealth - damageAmount);
 
     if (currentHealth - damageAmount <= 0) {
       onEnemyDestroyed();
     }
+  };
+
+  const handleEnemyReachedEnd = () => {
+    // Handle logic when enemy reaches the end
+    setReachedEnd(true);
+    onEnemyReachedEnd();
   };
 
   return (
@@ -43,5 +49,3 @@ const Enemy = ({ position, path, speed, health, damage, onEnemyReachedEnd, onEne
 };
 
 export default Enemy;
-
-
