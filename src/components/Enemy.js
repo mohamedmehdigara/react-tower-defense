@@ -44,3 +44,4 @@ const Enemy = ({ position, path, speed, health, damage, onEnemyReachedEnd, onEne
 
 export default Enemy;
 
+

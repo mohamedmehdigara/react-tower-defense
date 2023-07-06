@@ -1,40 +1,34 @@
-import React, { useState } from 'react';
+import React from 'react';
+import Enemy from './Enemy';
 
 const GameBoard = () => {
-  const [towers, setTowers] = useState([]);
-  const [enemies, setEnemies] = useState([]);
+  const path = [0, 1, 2, 3, 4]; // Replace with your actual path array
 
-  // Define functions to handle tower placement and enemy spawning
-
-  const handleTowerPlacement = (position) => {
-    // Logic to place a tower at the specified position
-    // Update the 'towers' state with the new tower information
+  const handleEnemyReachedEnd = () => {
+    // Handle logic when enemy reaches the end
+    console.log('Enemy reached the end!');
   };
 
-  const handleEnemySpawn = () => {
-    // Logic to spawn an enemy on the game board
-    // Update the 'enemies' state with the new enemy information
+  const handleEnemyDestroyed = () => {
+    // Handle logic when enemy is destroyed
+    console.log('Enemy destroyed!');
   };
 
   return (
     <div>
       <h1>Tower Defense Game</h1>
       {/* Render the game board */}
-      <div className="game-board">
-        {/* Render the grid or layout of the game board */}
-      </div>
-
-      <div className="controls">
-        {/* Add UI elements for tower selection and placement */}
-      </div>
-
-      <div className="enemy-spawner">
-        {/* Add a button or timer to spawn enemies */}
-        <button onClick={handleEnemySpawn}>Spawn Enemy</button>
-      </div>
+      <Enemy
+        position={0}
+        path={path}
+        speed={5}
+        health={100}
+        damage={10}
+        onEnemyReachedEnd={handleEnemyReachedEnd}
+        onEnemyDestroyed={handleEnemyDestroyed}
+      />
     </div>
   );
 };
 
 export default GameBoard;
-
