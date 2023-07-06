@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-const Tower = ({ position, onClick, type, damage, range, isUpgradable, onUpgrade }) => {
+const Tower = ({ position, onClick, isUpgradable, onUpgrade }) => {
+  const [upgradeLevel, setUpgradeLevel] = useState(0);
+
   const handleClick = () => {
     onClick(position);
   };
@@ -8,8 +10,36 @@ const Tower = ({ position, onClick, type, damage, range, isUpgradable, onUpgrade
   const handleUpgrade = () => {
     if (isUpgradable) {
       onUpgrade(position);
+      setUpgradeLevel(prevLevel => prevLevel + 1);
     }
   };
+
+  const getUpgradeAttributes = (upgradeLevel) => {
+    switch (upgradeLevel) {
+      case 0:
+        return {
+          damage: 50,
+          range: 10,
+        };
+      case 1:
+        return {
+          damage: 75,
+          range: 12,
+        };
+      case 2:
+        return {
+          damage: 100,
+          range: 15,
+        };
+      default:
+        return {
+          damage: 0,
+          range: 0,
+        };
+    }
+  };
+
+  const { damage, range } = getUpgradeAttributes(upgradeLevel);
 
   return (
     <div className="tower" onClick={handleClick}>
@@ -18,7 +48,7 @@ const Tower = ({ position, onClick, type, damage, range, isUpgradable, onUpgrade
 
       {/* Display tower properties */}
       <div>
-        <h3>Tower Type: {type}</h3>
+        <h3>Tower Type: Cannon</h3>
         <p>Damage: {damage}</p>
         <p>Range: {range}</p>
       </div>
