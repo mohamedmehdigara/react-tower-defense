@@ -6,23 +6,46 @@ const GameBoard = () => {
   const [score, setScore] = useState(0);
   const [level, setLevel] = useState(1);
   const [resources, setResources] = useState(100);
-  const [towers, setTowers] = useState([]); // Add towers state
-  const [enemies, setEnemies] = useState([]); // Add enemies state
 
-  const towerCost = 10; // Define the cost of placing a tower
-  const upgradeCost = 20; // Define the cost of upgrading a tower
-  class Tower {
-    constructor() {
-      // Tower properties and logic
+  // Define tower related variables
+  const towerCost = 10;
+  const upgradeCost = 20;
+
+  // Define your tower placement and upgrade logic here
+  const handleTowerPlacement = () => {
+    if (resources >= towerCost) {
+      // Deduct the tower cost from available resources
+      setResources(resources - towerCost);
+
+      // Implement logic to place the tower on a valid location
+      // For example, you can allow the player to click on the game board
+      // and place the tower at the clicked location
+
+      // Once the tower is placed, you can update your towers array
+    } else {
+      alert("Not enough resources to place a tower.");
     }
-  }
+  };
 
+  const handleTowerUpgrade = () => {
+    // Implement tower upgrade logic here
+    // Deduct resources, upgrade towers, and update UI
+  };
 
   useEffect(() => {
+    // Create a scene
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+    // Create a camera
+    const camera = new THREE.PerspectiveCamera(
+      75, // Field of view
+      window.innerWidth / window.innerHeight, // Aspect ratio
+      0.1, // Near clipping plane
+      1000 // Far clipping plane
+    );
     camera.position.set(0, 2, 8);
 
+    // Create a renderer
     const renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
     containerRef.current.appendChild(renderer.domElement);
@@ -93,91 +116,6 @@ const GameBoard = () => {
 
     window.addEventListener('resize', handleResize);
 
-    const createTower = () => {
-      // Implement tower creation logic
-      return new Tower(); // Replace with your tower creation logic
-    };
-  
-    // Define a function to calculate tower placement location
-    const calculateTowerPlacementLocation = () => {
-      // Implement logic to calculate the tower placement location
-      return { x: 0, y: 0, z: 0 }; // Replace with your logic
-    };
-  
-    // Define a function to select a tower for upgrade
-    const selectTowerToUpgrade = (tower) => {
-      // Implement tower selection logic
-      // You can use this function to select a tower for upgrade
-    };
-  
-    // Define a constant for the maximum upgrade level
-    const maxUpgradeLevel = 3; // Adjust this value based on your game
-  
-
-
-    const handleTowerPlacement = () => {
-      // Check if you have enough resources to place a tower
-      if (resources >= towerCost) {
-        // Deduct the tower cost from available resources
-        setResources(resources - towerCost);
-  
-        // Create a new tower instance
-        const newTower = createTower();
-  
-        // Calculate the tower placement location
-        const placementLocation = calculateTowerPlacementLocation();
-  
-        // Update the tower's position based on the calculated location
-        newTower.position.set(placementLocation.x, placementLocation.y, placementLocation.z);
-  
-        // Add the new tower to the list of towers
-        setTowers([...towers, newTower]);
-      } else {
-        // Display a message to inform the player they don't have enough resources
-        alert("Not enough resources to place a tower.");
-      }
-    };
-     
-    const handleTowerUpgrade = () => {
-      // Check if there are towers that can be upgraded
-      if (towers.length > 0) {
-        // Select a tower to upgrade (you can implement your selection logic)
-        const towerToUpgrade = selectTowerToUpgrade();
-    
-        // Check if the selected tower can be upgraded
-        if (towerToUpgrade && towerToUpgrade.upgradeLevel < maxUpgradeLevel) {
-          // Check if you have enough resources to perform the upgrade
-          if (resources >= upgradeCost) {
-            // Deduct the upgrade cost from available resources
-            setResources(resources - upgradeCost);
-    
-            // Implement the tower upgrade logic
-            // For example, you can increase the tower's damage, range, or other attributes
-            // and increment its upgrade level
-    
-            // Update the towers array with the upgraded tower
-            const updatedTowers = towers.map((tower) =>
-              tower.id === towerToUpgrade.id
-                ? { ...towerToUpgrade, upgradeLevel: towerToUpgrade.upgradeLevel + 1 }
-                : tower
-            );
-    
-            setTowers(updatedTowers);
-          } else {
-            // Display a message to inform the player they don't have enough resources
-            alert("Not enough resources to upgrade the tower.");
-          }
-        } else {
-          // Display a message to inform the player that the tower can't be upgraded further
-          alert("This tower can't be upgraded further.");
-        }
-      } else {
-        // Display a message to inform the player that they need to place a tower first
-        alert("You need to place a tower before upgrading.");
-      }
-    };
-    
-  
     return () => {
       if (containerRef.current) {
         containerRef.current.removeChild(renderer.domElement);
@@ -189,7 +127,7 @@ const GameBoard = () => {
   return (
     <div>
       <div ref={containerRef} />
-  
+
       <div className="ui">
         <div>
           <h2>Score: {score}</h2>
