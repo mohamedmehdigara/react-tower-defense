@@ -4,13 +4,13 @@ import Enemy from './components/Enemy';
 import Tower from './components/Tower';
 import * as THREE from 'three'; // Import Three.js
 
-
 const App = () => {
+  // Create a Three.js scene
   const scene = new THREE.Scene();
 
   return (
     <div className="App">
-      <GameBoard />
+      <GameBoard scene={scene} /> {/* Pass the scene to GameBoard */}
       <Enemy
         position={0}
         path={[0, 1, 2, 3, 4]} // Replace with your actual path array
@@ -21,8 +21,8 @@ const App = () => {
         onEnemyDestroyed={() => console.log('Enemy destroyed!')}
       />
       <Tower
-       position={{ x: 0, y: 0, z: 0 }}
-        target={{ scene }}
+        position={0}
+        target={{ scene }} // Pass the scene to Tower
         onClick={(position) => console.log('Tower clicked at position:', position)}
         type="Cannon"
         damage={50}
