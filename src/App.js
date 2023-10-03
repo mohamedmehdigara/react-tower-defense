@@ -2,8 +2,12 @@ import React from 'react';
 import GameBoard from './components/GameBoard';
 import Enemy from './components/Enemy';
 import Tower from './components/Tower';
+import * as THREE from 'three'; // Import Three.js
+
 
 const App = () => {
+  const scene = new THREE.Scene();
+
   return (
     <div className="App">
       <GameBoard />
@@ -17,7 +21,8 @@ const App = () => {
         onEnemyDestroyed={() => console.log('Enemy destroyed!')}
       />
       <Tower
-        position={0}
+       position={{ x: 0, y: 0, z: 0 }}
+        target={{ scene }}
         onClick={(position) => console.log('Tower clicked at position:', position)}
         type="Cannon"
         damage={50}
