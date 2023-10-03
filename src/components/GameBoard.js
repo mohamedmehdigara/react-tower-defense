@@ -6,6 +6,17 @@ const GameBoard = () => {
   const [score, setScore] = useState(0);
   const [level, setLevel] = useState(1);
   const [resources, setResources] = useState(100);
+  const [towers, setTowers] = useState([]); // Add towers state
+  const [enemies, setEnemies] = useState([]); // Add enemies state
+
+  const towerCost = 10; // Define the cost of placing a tower
+  const upgradeCost = 20; // Define the cost of upgrading a tower
+  class Tower {
+    constructor() {
+      // Tower properties and logic
+    }
+  }
+
 
   useEffect(() => {
     const scene = new THREE.Scene();
@@ -82,27 +93,51 @@ const GameBoard = () => {
 
     window.addEventListener('resize', handleResize);
 
+    const createTower = () => {
+      // Implement tower creation logic
+      return new Tower(); // Replace with your tower creation logic
+    };
+  
+    // Define a function to calculate tower placement location
+    const calculateTowerPlacementLocation = () => {
+      // Implement logic to calculate the tower placement location
+      return { x: 0, y: 0, z: 0 }; // Replace with your logic
+    };
+  
+    // Define a function to select a tower for upgrade
+    const selectTowerToUpgrade = (tower) => {
+      // Implement tower selection logic
+      // You can use this function to select a tower for upgrade
+    };
+  
+    // Define a constant for the maximum upgrade level
+    const maxUpgradeLevel = 3; // Adjust this value based on your game
+  
+
+
     const handleTowerPlacement = () => {
       // Check if you have enough resources to place a tower
       if (resources >= towerCost) {
         // Deduct the tower cost from available resources
         setResources(resources - towerCost);
-    
+  
         // Create a new tower instance
         const newTower = createTower();
-    
-        // Implement logic to place the tower on a valid location
-        // For example, you can allow the player to click on the game board
-        // and place the tower at the clicked location
-    
-        // Once the tower is placed, you can update your towers array
+  
+        // Calculate the tower placement location
+        const placementLocation = calculateTowerPlacementLocation();
+  
+        // Update the tower's position based on the calculated location
+        newTower.position.set(placementLocation.x, placementLocation.y, placementLocation.z);
+  
+        // Add the new tower to the list of towers
         setTowers([...towers, newTower]);
       } else {
         // Display a message to inform the player they don't have enough resources
         alert("Not enough resources to place a tower.");
       }
     };
-    
+     
     const handleTowerUpgrade = () => {
       // Check if there are towers that can be upgraded
       if (towers.length > 0) {
