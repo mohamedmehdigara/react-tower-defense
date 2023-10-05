@@ -10,6 +10,7 @@ const GameBoard = () => {
   const [resources, setResources] = useState(100);
   const [enemies, setEnemies] = useState([]);
   const [towers, setTowers] = useState([]);
+  const [scene, setScene] = useState(null); // Declare scene variable
 
   // Define tower related variables
   const towerCost = 10;
@@ -47,7 +48,8 @@ const GameBoard = () => {
 
   useEffect(() => {
     // Create a scene
-    const scene = new THREE.Scene();
+    const newScene = new THREE.Scene();
+    setScene(newScene); // Set the scene
 
     // Create a camera
     const camera = new THREE.PerspectiveCamera(
@@ -67,14 +69,14 @@ const GameBoard = () => {
     const pathGeometry = new THREE.BoxGeometry(4, 0.1, 1);
     const pathMaterial = new THREE.MeshStandardMaterial({ color: 0x0000ff });
     const path = new THREE.Mesh(pathGeometry, pathMaterial);
-    scene.add(path);
+    newScene.add(path);
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(ambientLight);
+    newScene.add(ambientLight);
 
     const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
     directionalLight.position.set(0, 5, 5);
-    scene.add(directionalLight);
+    newScene.add(directionalLight);
 
     const animate = () => {
       requestAnimationFrame(animate);
@@ -85,7 +87,7 @@ const GameBoard = () => {
         const towerMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000 });
         const tower = new THREE.Mesh(towerGeometry, towerMaterial);
         tower.position.copy(towerPosition);
-        scene.add(tower);
+        newScene.add(tower);
 
         // Implement tower logic here (e.g., targeting enemies)
         // You can loop through the enemies array and check for targets
@@ -97,12 +99,12 @@ const GameBoard = () => {
         const enemyMaterial = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
         const enemy = new THREE.Mesh(enemyGeometry, enemyMaterial);
         enemy.position.copy(enemyPosition);
-        scene.add(enemy);
+        newScene.add(enemy);
 
         // Implement enemy logic here (e.g., collision detection with towers)
       });
 
-      renderer.render(scene, camera);
+      renderer.render(newScene, camera);
     };
 
     animate();
