@@ -1,12 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import Tower from './Tower';
+import Enemy from './Enemy';
 
 const GameBoard = () => {
   const containerRef = useRef(null);
   const [score, setScore] = useState(0);
   const [level, setLevel] = useState(1);
   const [resources, setResources] = useState(100);
+  const [enemies, setEnemies] = useState([]);
+  const [towers, setTowers] = useState([]);
 
   // Define tower related variables
   const towerCost = 10;
@@ -23,6 +26,8 @@ const GameBoard = () => {
       // and place the tower at the clicked location
 
       // Once the tower is placed, you can update your towers array
+      const towerPosition = { x: 0, y: 1.5, z: 0 }; // Adjust tower position as needed
+      setTowers([...towers, towerPosition]);
     } else {
       alert("Not enough resources to place a tower.");
     }
@@ -33,17 +38,11 @@ const GameBoard = () => {
     // Deduct resources, upgrade towers, and update UI
   };
 
-  // Initialize your scene and enemies array
-  const scene = new THREE.Scene();
-  const enemies = [];
-
-  // Define the initial tower position
-  const towerPosition = { x: 0, y: 1.5, z: 0 };
-
-  // Create a target object to pass to the Tower component
-  const target = {
-    scene: scene,
-    enemies: enemies,
+  const addEnemy = () => {
+    // Implement logic to add enemies to the enemies array
+    // For example, you can create enemies with random positions
+    const enemyPosition = { x: 10, y: 1.5, z: 0 }; // Adjust enemy position as needed
+    setEnemies([...enemies, enemyPosition]);
   };
 
   useEffect(() => {
@@ -64,38 +63,11 @@ const GameBoard = () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     containerRef.current.appendChild(renderer.domElement);
 
-    // Arrays to hold towers and enemies
-    const towers = [];
-    const enemies = [];
-
-    // Create and position towers
-    const towerGeometry = new THREE.BoxGeometry(1, 3, 1);
-    const towerMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000 });
-    for (let i = 0; i < 5; i++) {
-      const tower = new THREE.Mesh(towerGeometry, towerMaterial);
-      tower.position.set(-3 + i * 1.5, 1.5, 0); // Adjust tower positions
-      towers.push(tower);
-      scene.add(tower);
-    }
-
     // Create path
     const pathGeometry = new THREE.BoxGeometry(4, 0.1, 1);
     const pathMaterial = new THREE.MeshStandardMaterial({ color: 0x0000ff });
     const path = new THREE.Mesh(pathGeometry, pathMaterial);
     scene.add(path);
-
-    // Create and position enemies
-    const enemyGeometry = new THREE.SphereGeometry(0.5, 32, 32);
-    const enemyMaterial = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
-    for (let i = 0; i < 10; i++) {
-      const enemy = new THREE.Mesh(enemyGeometry, enemyMaterial);
-      enemy.position.set(4 + i * 2, 0.5, 0); // Adjust enemy positions
-      enemies.push(enemy);
-      scene.add(enemy);
-
-      // Pass the target object to the enemy component
-      enemy.target = target;
-    }
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(ambientLight);
@@ -107,14 +79,26 @@ const GameBoard = () => {
     const animate = () => {
       requestAnimationFrame(animate);
 
-      towers.forEach((tower) => {
-        tower.rotation.x += 0.005;
-        tower.rotation.y += 0.005;
+      towers.forEach((towerPosition) => {
+        // Create and render towers in the scene
+        const towerGeometry = new THREE.BoxGeometry(1, 3, 1);
+        const towerMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+        const tower = new THREE.Mesh(towerGeometry, towerMaterial);
+        tower.position.copy(towerPosition);
+        scene.add(tower);
+
         // Implement tower logic here (e.g., targeting enemies)
+        // You can loop through the enemies array and check for targets
       });
 
-      enemies.forEach((enemy) => {
-        enemy.position.x -= 0.01;
+      enemies.forEach((enemyPosition) => {
+        // Create and render enemies in the scene
+        const enemyGeometry = new THREE.SphereGeometry(0.5, 32, 32);
+        const enemyMaterial = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
+        const enemy = new THREE.Mesh(enemyGeometry, enemyMaterial);
+        enemy.position.copy(enemyPosition);
+        scene.add(enemy);
+
         // Implement enemy logic here (e.g., collision detection with towers)
       });
 
@@ -140,7 +124,7 @@ const GameBoard = () => {
       }
       window.removeEventListener('resize', handleResize);
     };
-  }, []); // Empty dependency array for useEffect
+  }, [enemies, towers]);
 
   return (
     <div>
@@ -155,12 +139,18 @@ const GameBoard = () => {
         <div>
           <button onClick={handleTowerPlacement}>Place Tower</button>
           <button onClick={handleTowerUpgrade}>Upgrade Tower</button>
+          <button onClick={addEnemy}>Add Enemy</button>
           {/* Add more UI elements for game controls */}
         </div>
       </div>
 
-      {/* Render the Tower component with position and target */}
-      <Tower position={towerPosition} target={target} />
+      {enemies.map((enemyPosition, index) => (
+        <Enemy key={index} position={enemyPosition} />
+      ))}
+
+      {towers.map((towerPosition, index) => (
+        <Tower key={index} position={towerPosition} target={{ scene, enemies }} />
+      ))}
     </div>
   );
 };
