@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import GameBoard from './components/GameBoard';
 import Enemy from './components/Enemy';
 import Tower from './components/Tower';
-import * as THREE from 'three'; // Import Three.js
+import * as THREE from 'three';
 
 const App = () => {
   // Initialize scene, camera, and renderer as states
@@ -13,9 +13,6 @@ const App = () => {
   useEffect(() => {
     console.log("Initializing Three.js");
 
-  // ... (Three.js initialization code)
-
-  console.log("Three.js initialization complete");
     // Create a Three.js scene, camera, and renderer
     const newScene = new THREE.Scene();
     const newCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -25,13 +22,20 @@ const App = () => {
     newCamera.position.set(0, 2, 8);
     newRenderer.setSize(window.innerWidth, window.innerHeight);
 
-    // Append the renderer's DOM element to the container
-    document.getElementById('game-container').appendChild(newRenderer.domElement);
+    // Append the renderer's DOM element to the container if it exists
+    const container = document.getElementById('game-container');
+    if (container) {
+      container.appendChild(newRenderer.domElement);
+    } else {
+      console.error("Element with ID 'game-container' not found.");
+    }
 
     // Set states for scene, camera, and renderer
     setScene(newScene);
     setCamera(newCamera);
     setRenderer(newRenderer);
+
+    console.log("Three.js initialization complete");
 
     // Clean up on unmount
     return () => {
@@ -40,9 +44,13 @@ const App = () => {
       }
     };
   }, []);
+
   return (
     <div className="App">
-      <GameBoard scene={scene} camera={camera} renderer={renderer}/> {/* Pass the scene to GameBoard */}
+      <div id="game-container"></div> {/* Add an empty container for the renderer */}
+      {scene && camera && renderer && (
+  <GameBoard scene={scene} camera={camera} renderer={renderer} />
+)} {/* Pass the scene to GameBoard */}
       <Enemy
         position={0}
         path={[0, 1, 2, 3, 4]} // Replace with your actual path array

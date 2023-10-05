@@ -32,6 +32,11 @@ const GameBoard = () => {
     // Deduct resources, upgrade towers, and update UI
   };
 
+  const target = {
+    scene: scene,
+    enemies: enemies,
+  };
+
   useEffect(() => {
     // Create a scene
     const scene = new THREE.Scene();
@@ -140,6 +145,8 @@ const GameBoard = () => {
           {/* Add more UI elements for game controls */}
         </div>
       </div>
+      <Tower position={towerPosition} target={target} />
+
     </div>
   );
 };
