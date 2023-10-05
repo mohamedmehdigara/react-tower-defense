@@ -92,6 +92,9 @@ const GameBoard = () => {
       enemy.position.set(4 + i * 2, 0.5, 0); // Adjust enemy positions
       enemies.push(enemy);
       scene.add(enemy);
+
+      // Pass the target object to the enemy component
+      enemy.target = target;
     }
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
