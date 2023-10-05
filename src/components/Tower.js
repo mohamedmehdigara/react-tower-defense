@@ -22,11 +22,11 @@ const Tower = ({ position, target }) => {
 
       // Function to handle tower attacks
       const attack = () => {
-        if (cooldown <= 0 && target.enemies.length > 0) {
+        if (target.enemies && Array.isArray(target.enemies) && cooldown <= 0 && target.enemies.length > 0) {
           // Find the closest enemy
           let closestEnemy = null;
           let closestDistance = Infinity;
-
+      
           target.enemies.forEach((enemy) => {
             const distance = tower.position.distanceTo(enemy.position);
             if (distance < closestDistance) {
@@ -34,7 +34,7 @@ const Tower = ({ position, target }) => {
               closestEnemy = enemy;
             }
           });
-
+      
           if (closestEnemy) {
             // Attack the closest enemy
             closestEnemy.takeDamage(attackDamage);
@@ -42,7 +42,7 @@ const Tower = ({ position, target }) => {
           }
         }
       };
-
+      
       // Animation loop for tower attacks
       const animate = () => {
         requestAnimationFrame(animate);

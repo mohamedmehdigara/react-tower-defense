@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
+import Tower from './Tower';
 
 const GameBoard = () => {
   const containerRef = useRef(null);
@@ -32,6 +33,14 @@ const GameBoard = () => {
     // Deduct resources, upgrade towers, and update UI
   };
 
+  // Initialize your scene and enemies array
+  const scene = new THREE.Scene();
+  const enemies = [];
+
+  // Define the initial tower position
+  const towerPosition = { x: 0, y: 1.5, z: 0 };
+
+  // Create a target object to pass to the Tower component
   const target = {
     scene: scene,
     enemies: enemies,
@@ -121,13 +130,14 @@ const GameBoard = () => {
 
     window.addEventListener('resize', handleResize);
 
+    // Cleanup logic when the component unmounts
     return () => {
       if (containerRef.current) {
         containerRef.current.removeChild(renderer.domElement);
       }
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, []); // Empty dependency array for useEffect
 
   return (
     <div>
@@ -145,8 +155,9 @@ const GameBoard = () => {
           {/* Add more UI elements for game controls */}
         </div>
       </div>
-      <Tower position={towerPosition} target={target} />
 
+      {/* Render the Tower component with position and target */}
+      <Tower position={towerPosition} target={target} />
     </div>
   );
 };
