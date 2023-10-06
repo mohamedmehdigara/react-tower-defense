@@ -12,6 +12,7 @@ const GameBoard = () => {
   const [towers, setTowers] = useState([]);
   const [scene, setScene] = useState(null); // Declare scene variable
 
+
   // Define tower related variables
   const towerCost = 10;
   const upgradeCost = 20;
@@ -47,7 +48,6 @@ const GameBoard = () => {
   const addEnemy = () => {
     console.log("Adding enemy...");
 
-    const [path, setPath] = useState([]); // Initialize path as an empty array
     const randomIndex = Math.floor(Math.random() * path.length);
     
     // Check if the path array is empty or undefined
