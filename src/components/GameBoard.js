@@ -16,6 +16,11 @@ const GameBoard = () => {
   const towerCost = 10;
   const upgradeCost = 20;
 
+  const path = [
+    { x: -5, y: 1.5, z: 0 },
+    { x: 5, y: 1.5, z: 0 },
+  ];
+
   // Define your tower placement and upgrade logic here
   const handleTowerPlacement = () => {
     if (resources >= towerCost) {
