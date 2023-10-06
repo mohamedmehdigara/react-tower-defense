@@ -48,8 +48,11 @@ const GameBoard = () => {
     // Implement logic to add enemies to the enemies array
     const randomPosition = path[Math.floor(Math.random() * path.length)];
     // For example, you can create enemies with random positions
-    
+    console.log('Random Position:', randomPosition);
+
     setEnemies([...enemies, randomPosition]);
+    console.log('Updated Enemies:', enemies);
+
   };
 
   const handleEnemyReachedEnd = (index) => {
