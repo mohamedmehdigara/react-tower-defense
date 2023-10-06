@@ -45,13 +45,25 @@ const GameBoard = () => {
   };
 
   const addEnemy = () => {
+    console.log("Adding enemy...");
+
+    const [path, setPath] = useState([]); // Initialize path as an empty array
+    const randomIndex = Math.floor(Math.random() * path.length);
+    
+    // Check if the path array is empty or undefined
+    if (path.length === 0) {
+      console.error("Path is empty or undefined.");
+      return;
+    }
     // Implement logic to add enemies to the enemies array
-    const randomPosition = path[Math.floor(Math.random() * path.length)];
+    const randomPosition = path[randomIndex];
     // For example, you can create enemies with random positions
     console.log('Random Position:', randomPosition);
 
     setEnemies([...enemies, randomPosition]);
     console.log('Updated Enemies:', enemies);
+    console.log("Path:", path);
+  console.log("Enemies:", enemies);
 
   };
 
