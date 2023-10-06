@@ -41,8 +41,11 @@ const GameBoard = () => {
 
   const addEnemy = () => {
     // Implement logic to add enemies to the enemies array
+    const randomX = Math.random() * 10 - 5; // Adjust the range as needed
+
     // For example, you can create enemies with random positions
     const enemyPosition = { x: 10, y: 1.5, z: 0 }; // Adjust enemy position as needed
+    
     setEnemies([...enemies, enemyPosition]);
   };
 
