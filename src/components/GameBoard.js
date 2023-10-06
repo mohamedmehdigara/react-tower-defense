@@ -46,12 +46,28 @@ const GameBoard = () => {
 
   const addEnemy = () => {
     // Implement logic to add enemies to the enemies array
-    const randomX = Math.random() * 10 - 5; // Adjust the range as needed
-
+    const randomPosition = path[Math.floor(Math.random() * path.length)];
     // For example, you can create enemies with random positions
-    const enemyPosition = { x: 10, y: 1.5, z: 0 }; // Adjust enemy position as needed
     
-    setEnemies([...enemies, enemyPosition]);
+    setEnemies([...enemies, randomPosition]);
+  };
+
+  const handleEnemyReachedEnd = (index) => {
+    // Remove the enemy from the list when it reaches the end
+    const updatedEnemies = [...enemies];
+    updatedEnemies.splice(index, 1);
+    setEnemies(updatedEnemies);
+  };
+
+  const handleEnemyDestroyed = (index) => {
+    // Handle logic when an enemy is destroyed
+    // For example, increase the player's score
+    setScore(score + 1);
+
+    // Remove the destroyed enemy from the list
+    const updatedEnemies = [...enemies];
+    updatedEnemies.splice(index, 1);
+    setEnemies(updatedEnemies);
   };
 
   useEffect(() => {
@@ -154,8 +170,15 @@ const GameBoard = () => {
         </div>
       </div>
 
-      {enemies.map((enemyPosition, index) => (
-        <Enemy key={index} position={enemyPosition} />
+      {enemies.map((enemy, index) => (
+        <Enemy key={index}
+        position={enemy} 
+        path={path}
+        speed={0.1} // Adjust speed as needed
+        health={10} // Adjust health as needed
+        damage={5} // Adjust damage as needed
+        onEnemyReachedEnd={() => handleEnemyReachedEnd(index)}
+        onEnemyDestroyed={() => handleEnemyDestroyed(index)} />
       ))}
 
       {towers.map((towerPosition, index) => (
