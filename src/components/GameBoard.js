@@ -3,6 +3,11 @@ import * as THREE from 'three';
 import Tower from './Tower';
 import Enemy from './Enemy';
 
+const path = [
+  { x: -5, y: 1.5, z: 0 },
+  
+];
+
 const GameBoard = () => {
   const containerRef = useRef(null);
   const [score, setScore] = useState(0);
@@ -17,10 +22,7 @@ const GameBoard = () => {
   const towerCost = 10;
   const upgradeCost = 20;
 
-  const path = [
-    { x: -5, y: 1.5, z: 0 },
-    { x: 5, y: 1.5, z: 0 },
-  ];
+ 
 
   // Define your tower placement and upgrade logic here
   const handleTowerPlacement = () => {
