@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import GameBoard from './components/GameBoard';
-import Enemy from './components/Enemy';
-import Tower from './components/Tower';
+import GameBoard from './components/GameBoard/GameBoard';
+import Enemy from './components/Enemy/Enemy';
+import Tower from './components/Tower/Tower';
 import * as THREE from 'three';
 
 const App = () => {

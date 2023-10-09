@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
-import Tower from './Tower';
-import Enemy from './Enemy';
+import Tower from '../Tower/Tower';
+import Enemy from '../Enemy/Enemy';
+import './GameBoard.css'; // Import your CSS file for styling
 
 const path = [
   { x: -5, y: 1.5, z: 0 },
-  
 ];
 
 const GameBoard = () => {
@@ -15,27 +15,16 @@ const GameBoard = () => {
   const [resources, setResources] = useState(100);
   const [enemies, setEnemies] = useState([]);
   const [towers, setTowers] = useState([]);
-  const [scene, setScene] = useState(null); // Declare scene variable
+  const [scene, setScene] = useState(null);
 
-
-  // Define tower related variables
   const towerCost = 10;
   const upgradeCost = 20;
 
- 
-
-  // Define your tower placement and upgrade logic here
   const handleTowerPlacement = () => {
     if (resources >= towerCost) {
-      // Deduct the tower cost from available resources
       setResources(resources - towerCost);
 
-      // Implement logic to place the tower on a valid location
-      // For example, you can allow the player to click on the game board
-      // and place the tower at the clicked location
-
-      // Once the tower is placed, you can update your towers array
-      const towerPosition = { x: 0, y: 1.5, z: 0 }; // Adjust tower position as needed
+      const towerPosition = { x: 0, y: 1.5, z: 0 };
       setTowers([...towers, towerPosition]);
     } else {
       alert("Not enough resources to place a tower.");
@@ -51,62 +40,48 @@ const GameBoard = () => {
     console.log("Adding enemy...");
 
     const randomIndex = Math.floor(Math.random() * path.length);
-    
-    // Check if the path array is empty or undefined
+
     if (path.length === 0) {
       console.error("Path is empty or undefined.");
       return;
     }
-    // Implement logic to add enemies to the enemies array
+
     const randomPosition = path[randomIndex];
-    // For example, you can create enemies with random positions
     console.log('Random Position:', randomPosition);
 
     setEnemies([...enemies, randomPosition]);
-    console.log('Updated Enemies:', enemies);
-    console.log("Path:", path);
-  console.log("Enemies:", enemies);
-
   };
 
   const handleEnemyReachedEnd = (index) => {
-    // Remove the enemy from the list when it reaches the end
     const updatedEnemies = [...enemies];
     updatedEnemies.splice(index, 1);
     setEnemies(updatedEnemies);
   };
 
   const handleEnemyDestroyed = (index) => {
-    // Handle logic when an enemy is destroyed
-    // For example, increase the player's score
     setScore(score + 1);
 
-    // Remove the destroyed enemy from the list
     const updatedEnemies = [...enemies];
     updatedEnemies.splice(index, 1);
     setEnemies(updatedEnemies);
   };
 
   useEffect(() => {
-    // Create a scene
     const newScene = new THREE.Scene();
-    setScene(newScene); // Set the scene
+    setScene(newScene);
 
-    // Create a camera
     const camera = new THREE.PerspectiveCamera(
-      75, // Field of view
-      window.innerWidth / window.innerHeight, // Aspect ratio
-      0.1, // Near clipping plane
-      1000 // Far clipping plane
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
     );
     camera.position.set(0, 2, 8);
 
-    // Create a renderer
     const renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
     containerRef.current.appendChild(renderer.domElement);
 
-    // Create path
     const pathGeometry = new THREE.BoxGeometry(4, 0.1, 1);
     const pathMaterial = new THREE.MeshStandardMaterial({ color: 0x0000ff });
     const path = new THREE.Mesh(pathGeometry, pathMaterial);
@@ -123,26 +98,19 @@ const GameBoard = () => {
       requestAnimationFrame(animate);
 
       towers.forEach((towerPosition) => {
-        // Create and render towers in the scene
         const towerGeometry = new THREE.BoxGeometry(1, 3, 1);
         const towerMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000 });
         const tower = new THREE.Mesh(towerGeometry, towerMaterial);
         tower.position.copy(towerPosition);
         newScene.add(tower);
-
-        // Implement tower logic here (e.g., targeting enemies)
-        // You can loop through the enemies array and check for targets
       });
 
       enemies.forEach((enemyPosition) => {
-        // Create and render enemies in the scene
         const enemyGeometry = new THREE.SphereGeometry(0.5, 32, 32);
         const enemyMaterial = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
         const enemy = new THREE.Mesh(enemyGeometry, enemyMaterial);
         enemy.position.copy(enemyPosition);
         newScene.add(enemy);
-
-        // Implement enemy logic here (e.g., collision detection with towers)
       });
 
       renderer.render(newScene, camera);
@@ -160,7 +128,6 @@ const GameBoard = () => {
 
     window.addEventListener('resize', handleResize);
 
-    // Cleanup logic when the component unmounts
     return () => {
       if (containerRef.current) {
         containerRef.current.removeChild(renderer.domElement);
@@ -171,7 +138,7 @@ const GameBoard = () => {
 
   return (
     <div>
-      <div ref={containerRef} />
+      <div ref={containerRef} className="game-board" />
 
       <div className="ui">
         <div>
@@ -188,14 +155,16 @@ const GameBoard = () => {
       </div>
 
       {enemies.map((enemy, index) => (
-        <Enemy key={index}
-        position={enemy} 
-        path={path}
-        speed={0.1} // Adjust speed as needed
-        health={10} // Adjust health as needed
-        damage={5} // Adjust damage as needed
-        onEnemyReachedEnd={() => handleEnemyReachedEnd(index)}
-        onEnemyDestroyed={() => handleEnemyDestroyed(index)} />
+        <Enemy
+          key={index}
+          position={enemy}
+          path={path}
+          speed={0.1}
+          health={10}
+          damage={5}
+          onEnemyReachedEnd={() => handleEnemyReachedEnd(index)}
+          onEnemyDestroyed={() => handleEnemyDestroyed(index)}
+        />
       ))}
 
       {towers.map((towerPosition, index) => (
