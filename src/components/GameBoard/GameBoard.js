@@ -4,7 +4,7 @@ import Tower from '../Tower/Tower';
 import Enemy from '../Enemy/Enemy';
 import './GameBoard.css'; // Import your CSS file for styling
 
-const path = [
+const initialPath = [ // Renamed to initialPath to avoid conflicts
   { x: -5, y: 1.5, z: 0 },
 ];
 
@@ -23,7 +23,6 @@ const GameBoard = () => {
   const handleTowerPlacement = () => {
     if (resources >= towerCost) {
       setResources(resources - towerCost);
-
       const towerPosition = { x: 0, y: 1.5, z: 0 };
       setTowers([...towers, towerPosition]);
     } else {
@@ -38,17 +37,14 @@ const GameBoard = () => {
 
   const addEnemy = () => {
     console.log("Adding enemy...");
-
-
-    if (path.length === 0) {
+    
+    if (initialPath.length === 0) {
       console.error("Path is empty or undefined.");
       return;
     }
-    const randomIndex = Math.floor(Math.random() * path.length);
-
-    const randomPosition = path[randomIndex];
+    const randomIndex = Math.floor(Math.random() * initialPath.length);
+    const randomPosition = initialPath[randomIndex];
     console.log('Random Position:', randomPosition);
-
     setEnemies([...enemies, randomPosition]);
   };
 
@@ -60,7 +56,6 @@ const GameBoard = () => {
 
   const handleEnemyDestroyed = (index) => {
     setScore(score + 1);
-
     const updatedEnemies = [...enemies];
     updatedEnemies.splice(index, 1);
     setEnemies(updatedEnemies);
@@ -82,10 +77,11 @@ const GameBoard = () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     containerRef.current.appendChild(renderer.domElement);
 
+    // Use initialPath instead of path for pathGeometry
     const pathGeometry = new THREE.BoxGeometry(4, 0.1, 1);
     const pathMaterial = new THREE.MeshStandardMaterial({ color: 0x0000ff });
-    const path = new THREE.Mesh(pathGeometry, pathMaterial);
-    newScene.add(path);
+    const pathMesh = new THREE.Mesh(pathGeometry, pathMaterial);
+    newScene.add(pathMesh);
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     newScene.add(ambientLight);
@@ -158,7 +154,7 @@ const GameBoard = () => {
         <Enemy
           key={index}
           position={enemy}
-          path={path}
+          path={initialPath} // Use initialPath here
           speed={0.1}
           health={10}
           damage={5}
