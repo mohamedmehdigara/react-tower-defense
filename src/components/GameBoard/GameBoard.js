@@ -39,12 +39,12 @@ const GameBoard = () => {
   const addEnemy = () => {
     console.log("Adding enemy...");
 
-    const randomIndex = Math.floor(Math.random() * path.length);
 
     if (path.length === 0) {
       console.error("Path is empty or undefined.");
       return;
     }
+    const randomIndex = Math.floor(Math.random() * path.length);
 
     const randomPosition = path[randomIndex];
     console.log('Random Position:', randomPosition);
