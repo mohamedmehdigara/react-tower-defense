@@ -1,5 +1,15 @@
 .enemy-info {
-    /* Add your styles for the enemy info container */
+    background-color: rgba(0, 0, 0, 0.8); /* Add a semi-transparent background */
+    color: #fff; /* Text color */
+    padding: 10px; /* Add some padding around the content */
+    border-radius: 5px; /* Rounded corners */
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Stack child elements vertically */
+    align-items: center; /* Center child elements horizontally */
+  }
+  
+  .enemy-info > div {
+    margin: 5px 0; /* Add some spacing between elements */
   }
   
   .health-bar {
@@ -7,7 +17,7 @@
     background-color: #ddd;
     height: 20px;
     border-radius: 5px;
-    margin-top: 5px;
+    margin-top: 10px; /* Increase the top margin for separation */
   }
   
   .health-fill {
