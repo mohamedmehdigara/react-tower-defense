@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import "../Enemy/Enemy.css";
 
 const Enemy = ({ position, path, speed, health, damage, onEnemyReachedEnd, onEnemyDestroyed }) => {
   const [currentPosition, setCurrentPosition] = useState(0);
@@ -18,7 +19,7 @@ const Enemy = ({ position, path, speed, health, damage, onEnemyReachedEnd, onEne
       setCurrentPosition(nextPosition);
 
       // Calculate the time it takes to move to the next position based on speed
-      const moveDuration = Math.abs(newPosition - path[currentPosition]) / speed * 1000;
+      const moveDuration = Math.abs(newPosition - path[currentPosition].x) / speed * 1000;
 
       setTimeout(moveEnemy, moveDuration);
     };
@@ -40,12 +41,20 @@ const Enemy = ({ position, path, speed, health, damage, onEnemyReachedEnd, onEne
     onEnemyReachedEnd();
   };
 
-  return (
-    <div>
-      <div>Enemy Health: {currentHealth}</div>
-      {/* Render the enemy component */}
-    </div>
-  );
+  // Inside the return statement
+return(
+
+<div className="enemy-info">
+  <div>Enemy Health:</div>
+  <div className="health-bar">
+    <div
+      className="health-fill"
+      style={{ width: `${(currentHealth / health) * 100}%` }}
+    ></div>
+  </div>
+  <div>Position: ({position.x}, {position.y}, {position.z})</div>
+</div>
+)
 };
 
 export default Enemy;
