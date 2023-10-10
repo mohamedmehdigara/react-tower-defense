@@ -3,13 +3,14 @@ import GameBoard from './components/GameBoard/GameBoard';
 import Enemy from './components/Enemy/Enemy';
 import Tower from './components/Tower/Tower';
 import * as THREE from 'three';
+import StartButton from './components/StartButton/StartButton'; // Import the StartButton component
 
 const App = () => {
   // Initialize scene, camera, and renderer as states
   const [scene, setScene] = useState(null);
   const [camera, setCamera] = useState(null);
   const [renderer, setRenderer] = useState(null);
-  const [enemies, setEnemies] = useState([]);
+  const [gameStarted, setGameStarted] = useState(false); // State to track whether the game has started
 
   useEffect(() => {
     console.log("Initializing Three.js");
@@ -49,29 +50,34 @@ const App = () => {
   return (
     <div className="App">
       <div id="game-container"></div> {/* Add an empty container for the renderer */}
-      {scene && camera && renderer && (
-        <GameBoard scene={scene} camera={camera} renderer={renderer} />
-      )} {/* Pass the scene to GameBoard */}
-      <Enemy
-        position={{ x: 0, y: 0, z: 0 }} 
-        path={[{ x: 0, y: 0, z: 0 }, { x: 1, y: 0, z: 0 }]} 
-        speed={5}
-        health={100}
-        damage={10}
-        onEnemyReachedEnd={() => console.log('Enemy reached the end!')}
-        onEnemyDestroyed={() => console.log('Enemy destroyed!')}
-      />
-      <Tower
-        position={{ x: 0, y: 0, z: 0 }} 
-        target={{ scene }}
-        enemies={enemies} // Pass the enemies array to Tower
-        onClick={(position) => console.log('Tower clicked at position:', position)}
-        type="Cannon"
-        damage={50}
-        range={10}
-        isUpgradable={true}
-        onUpgrade={(position) => console.log('Upgrade tower at position:', position)}
-      />
+      {!gameStarted ? (
+        <StartButton onClick={() => setGameStarted(true)} /> // Render the StartButton when the game has not started
+      ) : (
+        <>
+          {scene && camera && renderer && (
+            <GameBoard scene={scene} camera={camera} renderer={renderer} />
+          )}
+          <Enemy
+            position={{ x: 0, y: 0, z: 0 }}
+            path={[{ x: 0, y: 0, z: 0 }, { x: 1, y: 0, z: 0 }]}
+            speed={5}
+            health={100}
+            damage={10}
+            onEnemyReachedEnd={() => console.log('Enemy reached the end!')}
+            onEnemyDestroyed={() => console.log('Enemy destroyed!')}
+          />
+          <Tower
+            position={{ x: 0, y: 0, z: 0 }}
+            target={{ scene }}
+            onClick={(position) => console.log('Tower clicked at position:', position)}
+            type="Cannon"
+            damage={50}
+            range={10}
+            isUpgradable={true}
+            onUpgrade={(position) => console.log('Upgrade tower at position:', position)}
+          />
+        </>
+      )}
     </div>
   );
 };
