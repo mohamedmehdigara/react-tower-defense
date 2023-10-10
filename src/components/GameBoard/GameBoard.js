@@ -2,16 +2,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import Tower from '../Tower/Tower';
 import Enemy from '../Enemy/Enemy';
-import './GameBoard.css'; // Import your CSS file for styling
+import './GameBoard.css';
 
-const initialPath = [ // Renamed to initialPath to avoid conflicts
+const initialPath = [
   { x: -5, y: 1.5, z: 0 },
 ];
 
 const GameBoard = () => {
   const containerRef = useRef(null);
   const [score, setScore] = useState(0);
-  const [level, setLevel] = useState(1);
   const [resources, setResources] = useState(100);
   const [enemies, setEnemies] = useState([]);
   const [towers, setTowers] = useState([]);
@@ -31,8 +30,39 @@ const GameBoard = () => {
   };
 
   const handleTowerUpgrade = () => {
-    // Implement tower upgrade logic here
-    // Deduct resources, upgrade towers, and update UI
+    // Check if there are towers available for upgrade
+    if (towers.length === 0) {
+      alert("No towers available for upgrade.");
+      return;
+    }
+  
+    // Check if there are enough resources for an upgrade
+    if (resources < upgradeCost) {
+      alert("Not enough resources for an upgrade.");
+      return;
+    }
+  
+    // Choose a tower to upgrade (for simplicity, we'll upgrade the first tower)
+    const towerToUpgrade = towers[0]; // You can implement a selection mechanism here
+  
+    // Implement tower upgrade logic, for example, increasing damage or range
+    // You can add more properties to your tower to support upgrades
+    // For now, let's increase the damage by 10%
+    const upgradedTowers = towers.map((tower) => {
+      if (tower === towerToUpgrade) {
+        return { ...tower, damage: tower.damage * 1.1 };
+      }
+      return tower;
+    });
+  
+    // Deduct upgrade cost from resources
+    setResources(resources - upgradeCost);
+  
+    // Update the towers with the upgraded tower
+    setTowers(upgradedTowers);
+  
+    // You can also update other UI elements to reflect the upgrade
+    console.log("Tower upgraded.");
   };
 
   const addEnemy = () => {
@@ -61,6 +91,11 @@ const GameBoard = () => {
     setEnemies(updatedEnemies);
   };
 
+  const handleTowerFiring = () => {
+    // Implement tower firing logic here
+    // Detect enemies in range and fire arrows
+  };
+
   useEffect(() => {
     const newScene = new THREE.Scene();
     setScene(newScene);
@@ -77,7 +112,6 @@ const GameBoard = () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     containerRef.current.appendChild(renderer.domElement);
 
-    // Use initialPath instead of path for pathGeometry
     const pathGeometry = new THREE.BoxGeometry(4, 0.1, 1);
     const pathMaterial = new THREE.MeshStandardMaterial({ color: 0x0000ff });
     const pathMesh = new THREE.Mesh(pathGeometry, pathMaterial);
@@ -139,14 +173,13 @@ const GameBoard = () => {
       <div className="ui">
         <div>
           <h2>Score: {score}</h2>
-          <h2>Level: {level}</h2>
           <h2>Resources: {resources}</h2>
         </div>
         <div>
           <button onClick={handleTowerPlacement}>Place Tower</button>
           <button onClick={handleTowerUpgrade}>Upgrade Tower</button>
           <button onClick={addEnemy}>Add Enemy</button>
-          {/* Add more UI elements for game controls */}
+          <button onClick={handleTowerFiring}>Fire Arrows</button>
         </div>
       </div>
 
@@ -154,7 +187,7 @@ const GameBoard = () => {
         <Enemy
           key={index}
           position={enemy}
-          path={initialPath} // Use initialPath here
+          path={initialPath}
           speed={0.1}
           health={10}
           damage={5}

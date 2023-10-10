@@ -2,7 +2,9 @@ import React from 'react';
 
 const StartButton = ({ onClick }) => {
   return (
-    <button onClick={onClick}>Start Game</button>
+    <div className="start-button">
+      <button onClick={onClick}>Start Game</button>
+    </div>
   );
 };
 
