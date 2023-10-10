@@ -61,7 +61,11 @@ Enemy.propTypes = {
     y: PropTypes.number,
     z: PropTypes.number,
   }),
-  path: PropTypes.arrayOf(PropTypes.object),
+  path: PropTypes.arrayOf(PropTypes.shape({
+    x: PropTypes.number,
+    y: PropTypes.number,
+    z: PropTypes.number,
+  })),
   speed: PropTypes.number,
   health: PropTypes.number,
   damage: PropTypes.number,

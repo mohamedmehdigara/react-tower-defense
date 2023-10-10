@@ -49,11 +49,11 @@ const App = () => {
     <div className="App">
       <div id="game-container"></div> {/* Add an empty container for the renderer */}
       {scene && camera && renderer && (
-  <GameBoard scene={scene} camera={camera} renderer={renderer} />
-)} {/* Pass the scene to GameBoard */}
+        <GameBoard scene={scene} camera={camera} renderer={renderer} />
+      )} {/* Pass the scene to GameBoard */}
       <Enemy
-        position={0}
-        path={[0, 1, 2, 3, 4]} // Replace with your actual path array
+        position={{ x: 0, y: 0, z: 0 }} 
+        path={[{ x: 0, y: 0, z: 0 }, { x: 1, y: 0, z: 0 }]} 
         speed={5}
         health={100}
         damage={10}
@@ -61,7 +61,7 @@ const App = () => {
         onEnemyDestroyed={() => console.log('Enemy destroyed!')}
       />
       <Tower
-        position={0}
+        position={{ x: 0, y: 0, z: 0 }} 
         target={{ scene }} // Pass the scene to Tower
         onClick={(position) => console.log('Tower clicked at position:', position)}
         type="Cannon"
