@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-
 import "./Enemy.css";
 
-const ENEMY_MOVE_DURATION = 1000; // Define a constant for move duration
+const ENEMY_MOVE_DURATION = 1000;
 
 const Enemy = ({ position, path, speed, health, damage, onEnemyReachedEnd, onEnemyDestroyed }) => {
   const [currentPosition, setCurrentPosition] = useState(0);
@@ -13,7 +12,6 @@ const Enemy = ({ position, path, speed, health, damage, onEnemyReachedEnd, onEne
   useEffect(() => {
     const moveEnemy = () => {
       if (currentPosition >= path.length - 1 || reachedEnd) {
-        // Enemy has reached the end or already reached the end, stop moving
         return;
       }
 
@@ -22,7 +20,6 @@ const Enemy = ({ position, path, speed, health, damage, onEnemyReachedEnd, onEne
 
       setCurrentPosition(nextPosition);
 
-      // Calculate the time it takes to move to the next position based on speed
       const moveDuration = Math.abs(newPosition.x - path[currentPosition].x) / speed * ENEMY_MOVE_DURATION;
 
       setTimeout(moveEnemy, moveDuration);
@@ -40,7 +37,6 @@ const Enemy = ({ position, path, speed, health, damage, onEnemyReachedEnd, onEne
   };
 
   const handleEnemyReachedEnd = () => {
-    // Handle logic when enemy reaches the end
     setReachedEnd(true);
     onEnemyReachedEnd();
   };
@@ -54,7 +50,6 @@ const Enemy = ({ position, path, speed, health, damage, onEnemyReachedEnd, onEne
   );
 };
 
-// Define prop types
 Enemy.propTypes = {
   position: PropTypes.shape({
     x: PropTypes.number,
@@ -73,9 +68,6 @@ Enemy.propTypes = {
   onEnemyDestroyed: PropTypes.func,
 };
 
-export default Enemy;
-
-// HealthBar component
 const HealthBar = ({ currentHealth, maxHealth }) => {
   const fillWidth = (currentHealth / maxHealth) * 100 + '%';
 
@@ -89,8 +81,9 @@ const HealthBar = ({ currentHealth, maxHealth }) => {
   );
 };
 
-// Define prop types for HealthBar
 HealthBar.propTypes = {
   currentHealth: PropTypes.number,
   maxHealth: PropTypes.number,
 };
+
+export default Enemy;
