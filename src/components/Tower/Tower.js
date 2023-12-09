@@ -77,10 +77,12 @@ const Tower = ({ position, target, enemies }) => {
         enemies.forEach((enemy) => {
           if (arrow.position.distanceTo(enemy.position) < 0.1) {
             enemy.takeDamage(ATTACK_DAMAGE);
-            target.scene.remove(arrow);
+            // Hide arrow when it hits an enemy
+            arrow.position.set(0, -100, 0);
           }
         });
 
+        // Remove arrow if it goes too far
         if (arrow.position.distanceTo(position) > 50) {
           target.scene.remove(arrow);
         }
