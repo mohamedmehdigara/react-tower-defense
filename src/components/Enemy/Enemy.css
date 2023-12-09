@@ -1,28 +1,42 @@
 .enemy-info {
-    background-color: rgba(0, 0, 0, 0.8); /* Add a semi-transparent background */
-    color: #fff; /* Text color */
-    padding: 10px; /* Add some padding around the content */
-    border-radius: 5px; /* Rounded corners */
-    display: flex; /* Use flexbox for layout */
-    flex-direction: column; /* Stack child elements vertically */
-    align-items: center; /* Center child elements horizontally */
-  }
-  
-  .enemy-info > div {
-    margin: 5px 0; /* Add some spacing between elements */
-  }
-  
-  .health-bar {
-    width: 100%;
-    background-color: #ddd;
-    height: 20px;
-    border-radius: 5px;
-    margin-top: 10px; /* Increase the top margin for separation */
-  }
-  
-  .health-fill {
-    height: 100%;
-    background-color: #4caf50;
-    border-radius: 5px;
-  }
-  
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.enemy-info > div {
+  margin: 5px 0;
+}
+
+.health-bar {
+  width: 100%;
+  background-color: #ddd;
+  height: 20px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.health-fill {
+  height: 100%;
+  background-color: #4caf50;
+  border-radius: 5px;
+}
+
+/* Additional Styles */
+.mesh {
+  cursor: pointer; /* Add a pointer cursor to the mesh */
+  position: relative;
+}
+
+/* Animate enemy mesh on hover */
+.mesh:hover {
+  scale: 1.1;
+  transition: scale 0.3s ease-in-out;
+}

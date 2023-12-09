@@ -5,7 +5,7 @@ import "./Enemy.css";
 
 const ENEMY_MOVE_DURATION = 1000; // Define a constant for move duration
 
-const Enemy = ({ position, path, speed, health, damage, onEnemyReachedEnd, onEnemyDestroyed }) => {
+const Enemy = ({ id, position, path, speed, health, damage, onEnemyReachedEnd, onEnemyDestroyed }) => {
   const [currentPosition, setCurrentPosition] = useState(0);
   const [currentHealth, setCurrentHealth] = useState(health);
   const [reachedEnd, setReachedEnd] = useState(false);
@@ -35,27 +35,34 @@ const Enemy = ({ position, path, speed, health, damage, onEnemyReachedEnd, onEne
     setCurrentHealth((prevHealth) => prevHealth - damageAmount);
 
     if (currentHealth - damageAmount <= 0) {
-      onEnemyDestroyed();
+      onEnemyDestroyed(id);
     }
   };
 
   const handleEnemyReachedEnd = () => {
     // Handle logic when the enemy reaches the end
     setReachedEnd(true);
-    onEnemyReachedEnd();
+    onEnemyReachedEnd(id);
   };
 
   return (
-    <div className="enemy-info">
-      <div>Enemy Health:</div>
-      <HealthBar currentHealth={currentHealth} maxHealth={health} />
-      <div>Position: ({position.x}, {position.y}, {position.z})</div>
-    </div>
+    <group position={[position.x, position.y, position.z]}>
+      <mesh>
+        <boxGeometry args={[1, 1, 1]} />
+        <meshStandardMaterial color={0x00ff00} />
+      </mesh>
+      <div className="enemy-info">
+        <div>Enemy Health:</div>
+        <HealthBar currentHealth={currentHealth} maxHealth={health} />
+        <div>Position: ({position.x.toFixed(2)}, {position.y.toFixed(2)}, {position.z.toFixed(2)})</div>
+      </div>
+    </group>
   );
 };
 
 // Define prop types
 Enemy.propTypes = {
+  id: PropTypes.number.isRequired,
   position: PropTypes.shape({
     x: PropTypes.number,
     y: PropTypes.number,

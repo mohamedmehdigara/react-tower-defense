@@ -35,16 +35,16 @@ const GameBoard = () => {
       alert("No towers available for upgrade.");
       return;
     }
-  
+
     // Check if there are enough resources for an upgrade
     if (resources < upgradeCost) {
       alert("Not enough resources for an upgrade.");
       return;
     }
-  
+
     // Choose a tower to upgrade (for simplicity, we'll upgrade the first tower)
     const towerToUpgrade = towers[0]; // You can implement a selection mechanism here
-  
+
     // Implement tower upgrade logic, for example, increasing damage or range
     // You can add more properties to your tower to support upgrades
     // For now, let's increase the damage by 10%
@@ -54,20 +54,20 @@ const GameBoard = () => {
       }
       return tower;
     });
-  
+
     // Deduct upgrade cost from resources
     setResources(resources - upgradeCost);
-  
+
     // Update the towers with the upgraded tower
     setTowers(upgradedTowers);
-  
+
     // You can also update other UI elements to reflect the upgrade
     console.log("Tower upgraded.");
   };
 
   const addEnemy = () => {
     console.log("Adding enemy...");
-    
+
     if (initialPath.length === 0) {
       console.error("Path is empty or undefined.");
       return;
@@ -94,6 +94,30 @@ const GameBoard = () => {
   const handleTowerFiring = () => {
     // Implement tower firing logic here
     // Detect enemies in range and fire arrows
+
+    // For simplicity, let's assume towers have a range of 5 units
+    const towerRange = 5;
+
+    towers.forEach((towerPosition) => {
+      enemies.forEach((enemyPosition, enemyIndex) => {
+        const distance = Math.sqrt(
+          Math.pow(towerPosition.x - enemyPosition.x, 2) +
+          Math.pow(towerPosition.y - enemyPosition.y, 2) +
+          Math.pow(towerPosition.z - enemyPosition.z, 2)
+        );
+
+        if (distance <= towerRange) {
+          // Tower can hit the enemy, simulate firing an arrow
+          handleArrowHitEnemy(enemyIndex);
+        }
+      });
+    });
+  };
+
+  const handleArrowHitEnemy = (enemyIndex) => {
+    // Handle logic when an arrow hits an enemy
+    // For now, just remove the enemy (you can add animations or other effects)
+    handleEnemyDestroyed(enemyIndex);
   };
 
   useEffect(() => {
