@@ -3,6 +3,8 @@ import * as THREE from 'three';
 import Tower from '../Tower/Tower';
 import Enemy from '../Enemy/Enemy';
 import './GameBoard.css';
+import ArcherTower from '../Tower/ArcherTower';
+
 
 const initialPath = [
   { x: -5, y: 1.5, z: 0 },
@@ -27,6 +29,11 @@ const GameBoard = () => {
     } else {
       alert("Not enough resources to place a tower.");
     }
+  };
+
+  const handlePlaceArcherTower = () => {
+    // Implement logic to place Archer Tower
+    console.log('Placing Archer Tower...');
   };
 
   const handleTowerUpgrade = () => {
@@ -204,6 +211,9 @@ const GameBoard = () => {
           <button onClick={handleTowerUpgrade}>Upgrade Tower</button>
           <button onClick={addEnemy}>Add Enemy</button>
           <button onClick={handleTowerFiring}>Fire Arrows</button>
+          <button className="place-archer-tower" onClick={handlePlaceArcherTower}>
+            Place Archer Tower
+          </button>
         </div>
       </div>
 
@@ -223,6 +233,9 @@ const GameBoard = () => {
       {towers.map((towerPosition, index) => (
         <Tower key={index} position={towerPosition} target={{ scene, enemies }} />
       ))}
+       <button onClick={() => handleTowerPlacement(<ArcherTower position={{ x: 0, y: 1.5, z: 0 }} />)}>
+          Place Archer Tower
+        </button>
     </div>
   );
 };

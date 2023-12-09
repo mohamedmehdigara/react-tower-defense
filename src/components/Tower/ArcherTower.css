@@ -1,0 +1,44 @@
+/* ArcherTower.css */
+
+.archer-tower {
+    background-color: #4caf50;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    color: white;
+  }
+  
+  .archer-tower h3 {
+    margin-bottom: 10px;
+  }
+  
+  .archer-tower p {
+    margin-bottom: 15px;
+  }
+  
+  .archer-tower h4 {
+    margin-bottom: 10px;
+  }
+  
+  .archer-tower ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .archer-tower li {
+    margin-bottom: 8px;
+  }
+  
+  .archer-tower button {
+    padding: 5px 10px;
+    background-color: #ffffff;
+    color: #4caf50;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .archer-tower button:hover {
+    background-color: #45a049;
+  }
+  
